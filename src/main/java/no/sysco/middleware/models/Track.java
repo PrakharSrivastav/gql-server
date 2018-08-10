@@ -9,6 +9,14 @@ public final class Track {
 
     public Track() { }
 
+    public Track(String id, String name, String artistId, String albumId, Double duration) {
+        this.id = id;
+        this.name = name;
+        this.artistId = artistId;
+        this.albumId = albumId;
+        this.duration = duration;
+    }
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getName() { return name; }

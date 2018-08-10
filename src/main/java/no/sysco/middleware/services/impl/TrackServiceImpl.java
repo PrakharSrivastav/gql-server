@@ -1,6 +1,7 @@
 package no.sysco.middleware.services.impl;
 
 import no.sysco.middleware.models.Track;
+import no.sysco.middleware.models.builder.TrackBuilder;
 import no.sysco.middleware.services.TrackService;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,12 @@ public final class TrackServiceImpl implements TrackService {
     }
 
     private Track getTrack() {
-        final Track track = new Track();
-        track.setAlbumId(UUID.randomUUID().toString());
-        track.setArtistId(UUID.randomUUID().toString());
-        track.setId(UUID.randomUUID().toString());
-        track.setDuration(new Random().nextDouble());
-        track.setName("Song Name");
-        return track;
+        return new TrackBuilder()
+                .setAlbumId(UUID.randomUUID().toString())
+                .setArtistId(UUID.randomUUID().toString())
+                .setId(UUID.randomUUID().toString())
+                .setDuration(new Random().nextDouble())
+                .setName("Song Name")
+                .createTrack();
     }
 }
