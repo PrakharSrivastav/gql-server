@@ -9,4 +9,4 @@ This repository is used to create a graphql server. The idea is to expose querie
 
 The relationship between the entities is defined below:
 
-![](docs/relationship/relationship.png)
+![](docs/relationship.png)

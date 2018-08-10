@@ -16,7 +16,7 @@ public class ArtistBuilder {
         return this;
     }
 
-    public Artist createArtist() {
+    public Artist build() {
         return new Artist(id, name);
     }
 }

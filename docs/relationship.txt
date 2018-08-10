@@ -1,39 +1,39 @@
 @startuml
 left to right direction
 class Artist{
-    String id
-    String name
+    id: String
+    name: String
 
-    List<Artist> get()
-    Artist find(String artistId)
-    List<Album> albums(String artistId)
-    List<Track> tracks(String artistId)
+    get() : List<Artist>
+    find(artistId: String): Artist
+    albums(artistId: String): List<Album>
+    tracks(artistId: String): List<Track>
 }
 
 class Album{
-    String id
-    String artistId
-    String name
-    List<Album> get();
-    Album find(String albumId)
-    List<Artist> artists(String albumId)
-    List<Track> tracks(String albumId)
+    id: String
+    artistId: String
+    name: String
+    get() : List<Album>
+    find(albumId: String): Album
+    artists(albumId: String): List<Artist>
+    tracks(albumId: String): List<Track>
 }
 
 class Track{
-    String id
-    String artistId
-    String albumId
-    String name
-    Double duration
+    id: String
+    artistId: String
+    albumId: String
+    name: String
+    duration: Double
 
-    List<Track> get()
-    Track find(String trackId)
-    List<Artist> artists(String trackId)
-    Album album(String trackId)
+    get(): List<Track>
+    find(trackId: String):Track
+    artists(trackId: String): List<Artist>
+    album(trackId: String): Album
 }
 
+Album  *--* Track
 Artist *--*  Album 
 Artist *--* Track 
-Album  *--* Track 
 @enduml

@@ -1,12 +1,18 @@
 type Artist {
     id: ID!
     name: String
+    # added
+    albums: [Album!]
+    tracks: [Track!]
 }
 
 type Album {
     id: ID!
     name: String
     artistId: ID!
+    # Added
+    artists:[Artist!]
+    tracks:[Track!]
 }
 
 type Track {
@@ -14,6 +20,9 @@ type Track {
     name: String
     artistId: ID!
     albumId: ID!
+    # Added
+    artists:[Artist!]
+    album: Album
 }
 
 type Query {

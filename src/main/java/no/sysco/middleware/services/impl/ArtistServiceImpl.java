@@ -24,6 +24,6 @@ public final class ArtistServiceImpl implements ArtistService {
         return new ArtistBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setName("Some Artist Name")
-                .createArtist();
+                .build();
     }
 }

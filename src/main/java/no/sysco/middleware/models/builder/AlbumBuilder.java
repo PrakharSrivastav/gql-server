@@ -22,7 +22,7 @@ public class AlbumBuilder {
         return this;
     }
 
-    public Album createAlbum() {
+    public Album build() {
         return new Album(id, name, artistId);
     }
 }

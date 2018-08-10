@@ -34,7 +34,7 @@ public class TrackBuilder {
         return this;
     }
 
-    public Track createTrack() {
+    public Track build() {
         return new Track(id, name, artistId, albumId, duration);
     }
 }

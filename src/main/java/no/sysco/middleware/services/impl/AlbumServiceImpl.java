@@ -25,6 +25,6 @@ public final class AlbumServiceImpl implements AlbumService {
                 .setArtistId(UUID.randomUUID().toString())
                 .setId(UUID.randomUUID().toString())
                 .setName("Some Name")
-                .createAlbum();
+                .build();
     }
 }

@@ -28,6 +28,6 @@ public final class TrackServiceImpl implements TrackService {
                 .setId(UUID.randomUUID().toString())
                 .setDuration(new Random().nextDouble())
                 .setName("Song Name")
-                .createTrack();
+                .build();
     }
 }
