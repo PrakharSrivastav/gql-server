@@ -14,7 +14,7 @@ class Album{
     id: String
     artistId: String
     name: String
-    get() : List<Album>
+    get(): List<Album>
     find(albumId: String): Album
     artists(albumId: String): List<Artist>
     tracks(albumId: String): List<Track>
