@@ -1,0 +1,24 @@
+type Artist {
+    id: ID!
+    name: String
+}
+
+type Album {
+    id: ID!
+    name: String
+    artistId: ID!
+}
+
+type Track {
+    id: ID!
+    name: String
+    artistId: ID!
+    albumId: ID!
+}
+
+type Query {
+    artist: [Artist!]
+    album: [Album!]
+    track: [Track!]
+}
+
