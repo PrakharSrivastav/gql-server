@@ -1,0 +1,39 @@
+@startuml
+left to right direction
+class Artist{
+    String id
+    String name
+
+    List<Artist> get()
+    Artist find(String artistId)
+    List<Album> albums(String artistId)
+    List<Track> tracks(String artistId)
+}
+
+class Album{
+    String id
+    String artistId
+    String name
+    List<Album> get();
+    Album find(String albumId)
+    List<Artist> artists(String albumId)
+    List<Track> tracks(String albumId)
+}
+
+class Track{
+    String id
+    String artistId
+    String albumId
+    String name
+    Double duration
+
+    List<Track> get()
+    Track find(String trackId)
+    List<Artist> artists(String trackId)
+    Album album(String trackId)
+}
+
+Artist *--*  Album 
+Artist *--* Track 
+Album  *--* Track 
+@enduml
