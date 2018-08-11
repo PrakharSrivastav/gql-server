@@ -4,7 +4,8 @@ import com.coxautodev.graphql.tools.GraphQLResolver;
 import no.sysco.middleware.models.Album;
 import no.sysco.middleware.models.Artist;
 import no.sysco.middleware.models.Track;
-import no.sysco.middleware.services.AlbumService;
+import no.sysco.middleware.services.ArtistService;
+import no.sysco.middleware.services.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,19 +14,20 @@ import java.util.List;
 @Component
 public class AlbumQueryResolver implements GraphQLResolver<Album> {
 
-    private AlbumService albumService;
+    private ArtistService artistService;
+    private TrackService trackService;
 
     @Autowired
-    public AlbumQueryResolver(final AlbumService albumService) {
-        this.albumService = albumService;
+    public AlbumQueryResolver(ArtistService artistService, TrackService trackService) {
+        this.artistService = artistService;
+        this.trackService = trackService;
     }
 
-    public List<Artist> getArtists(final Album album) {
-        return this.albumService.getArtists(album.getId());
-    }
+
+    public List<Artist> getArtists(final Album album) { return this.artistService.getArtistByAlbum(album.getId()); }
 
     public List<Track> getTracks(final Album album) {
-        return this.albumService.getTracks(album.getId());
+        return this.trackService.getTracksByAlbum(album.getId());
     }
 
 }

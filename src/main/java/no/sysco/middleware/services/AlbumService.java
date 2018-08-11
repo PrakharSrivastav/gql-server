@@ -7,7 +7,7 @@ import no.sysco.middleware.models.Track;
 import java.util.List;
 
 public interface AlbumService {
-    public List<Album> get();
-    public List<Artist> getArtists(String albumId);
-    public List<Track> getTracks(String albumId);
+    List<Album> getAll();
+    List<Album> getAlbumsByArtist(String artistId);
+    Album getAlbumByTrack(String trackId);
 }

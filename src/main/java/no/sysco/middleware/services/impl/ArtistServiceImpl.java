@@ -1,46 +1,30 @@
 package no.sysco.middleware.services.impl;
 
-import no.sysco.middleware.models.Album;
 import no.sysco.middleware.models.Artist;
-import no.sysco.middleware.models.Track;
-import no.sysco.middleware.models.builder.AlbumBuilder;
 import no.sysco.middleware.models.builder.ArtistBuilder;
-import no.sysco.middleware.models.builder.TrackBuilder;
 import no.sysco.middleware.services.ArtistService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @Service
 public final class ArtistServiceImpl implements ArtistService {
+
     @Override
-    public List<Artist> get() {
+    public List<Artist> getAll() {
         return this.generateList();
     }
 
     @Override
-    public List<Album> getAlbumsForArtist(final String artistId) {
-        return this.generateAlbumList();
+    public List<Artist> getArtistByAlbum(String albumId) {
+        return this.generateList();
     }
 
     @Override
-    public List<Track> getTracksForArtist(String artistId) {
-        return Arrays.asList(this.getTrack(), this.getTrack());
-    }
-
-    private List<Album> generateAlbumList() {
-        return Arrays.asList(this.getAlbum(), this.getAlbum());
-    }
-
-    private Album getAlbum() {
-        return new AlbumBuilder()
-                .setArtistId(UUID.randomUUID().toString())
-                .setId(UUID.randomUUID().toString())
-                .setName("Some Name")
-                .build();
+    public List<Artist> getArtistByTrack(String trackId) {
+        return this.generateList();
     }
 
     private List<Artist> generateList() {
@@ -54,18 +38,4 @@ public final class ArtistServiceImpl implements ArtistService {
                 .build();
     }
 
-
-    private List<Track> generateTracks() {
-        return Arrays.asList(this.getTrack(), this.getTrack());
-    }
-
-    private Track getTrack() {
-        return new TrackBuilder()
-                .setAlbumId(UUID.randomUUID().toString())
-                .setArtistId(UUID.randomUUID().toString())
-                .setId(UUID.randomUUID().toString())
-                .setDuration(new Random().nextDouble())
-                .setName("Song Name")
-                .build();
-    }
 }

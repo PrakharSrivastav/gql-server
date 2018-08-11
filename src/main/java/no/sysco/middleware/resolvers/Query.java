@@ -28,16 +28,16 @@ public final class Query implements GraphQLQueryResolver {
 
     // Get all Artists
     public List<Artist> getArtist() {
-        return this.artistService.get();
+        return this.artistService.getAll();
     }
 
     // Get all Albums
     public List<Album> getAlbum() {
-        return this.albumService.get();
+        return this.albumService.getAll();
     }
 
     // Get all Tracks
     public List<Track> getTrack() {
-        return this.trackService.get();
+        return this.trackService.getAll();
     }
 }

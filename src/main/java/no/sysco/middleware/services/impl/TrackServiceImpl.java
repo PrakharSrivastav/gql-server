@@ -12,8 +12,19 @@ import java.util.UUID;
 
 @Service
 public final class TrackServiceImpl implements TrackService {
+
     @Override
-    public List<Track> get() {
+    public List<Track> getAll() {
+        return this.generateTracks();
+    }
+
+    @Override
+    public List<Track> getTracksByAlbum(String trackId) {
+        return this.generateTracks();
+    }
+
+    @Override
+    public List<Track> getTracksByArtist(String artistId) {
         return this.generateTracks();
     }
 
