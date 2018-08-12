@@ -1,8 +1,10 @@
 package no.sysco.middleware.services.impl;
 
+import no.sysco.middleware.grpc.ArtistServiceGrpc;
 import no.sysco.middleware.models.Artist;
 import no.sysco.middleware.models.builder.ArtistBuilder;
 import no.sysco.middleware.services.ArtistService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -11,6 +13,9 @@ import java.util.UUID;
 
 @Service
 public final class ArtistServiceImpl implements ArtistService {
+
+    @Autowired
+    private ArtistServiceGrpc.ArtistServiceBlockingStub artistServiceBlockingStub;
 
     @Override
     public List<Artist> getAll() {

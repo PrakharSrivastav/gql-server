@@ -15,7 +15,8 @@ apply plugin: 'io.spring.dependency-management'
 
 group 'no.sysco.middleware'
 version '1.0-SNAPSHOT'
-
+// variables
+ext { grpcVersion = '1.13.1' }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -28,6 +29,8 @@ dependencies {
   compile 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
   compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
   compile 'com.graphql-java:graphql-java-tools:5.2.0'
+  compile "io.grpc:grpc-stub:${grpcVersion}"
+  compile "io.grpc:grpc-protobuf:${grpcVersion}"
   testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
