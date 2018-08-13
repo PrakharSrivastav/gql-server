@@ -1,0 +1,30 @@
+@startuml
+
+|Graphql|
+    start
+    :Client;
+    fork
+        :artist;
+    fork again
+        :track;
+    fork again
+        :album;
+    endfork
+
+|#AntiqueWhite|gRPC|
+
+|gRPC|
+    fork
+        :artist-service;
+    fork again
+        :track-service;
+    fork again
+        :album-service;
+    endfork
+
+|Graphql|
+    fork
+        :http Response;
+    endfork
+    stop
+@enduml

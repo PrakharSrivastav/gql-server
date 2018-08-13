@@ -1,0 +1,23 @@
+@startuml
+left to right direction
+
+cloud web
+cloud android
+cloud iOS
+node GraphQl
+component ArtistService
+component AlbumService
+component TrackService
+database ArtistDB
+database AlbumDB
+database TrackDB
+web <-->   GraphQl : "http1.1"
+android <--> GraphQl : "http1.1"
+iOS <--> GraphQl : "http1.1"
+GraphQl --> ArtistService : "http2"
+GraphQl --> AlbumService : "http2"
+GraphQl --> TrackService : "http2"
+ArtistService .. ArtistDB
+AlbumService .. AlbumDB
+TrackService .. TrackDB
+@enduml
