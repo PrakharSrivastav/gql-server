@@ -31,6 +31,7 @@ dependencies {
   compile 'com.graphql-java:graphql-java-tools:5.2.0'
   compile "io.grpc:grpc-stub:${grpcVersion}"
   compile "io.grpc:grpc-protobuf:${grpcVersion}"
+  compile "io.grpc:grpc-netty:${grpcVersion}"
   testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 

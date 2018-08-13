@@ -1,41 +1,62 @@
 package no.sysco.middleware.services.impl;
 
+import com.google.protobuf.Empty;
+import io.grpc.ManagedChannel;
+import no.sysco.middleware.grpc.AlbumBaseDefinition;
+import no.sysco.middleware.grpc.AlbumServiceGrpc;
 import no.sysco.middleware.models.Album;
 import no.sysco.middleware.models.builder.AlbumBuilder;
 import no.sysco.middleware.services.AlbumService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public final class AlbumServiceImpl implements AlbumService {
+
+    private AlbumServiceGrpc.AlbumServiceBlockingStub stub;
+    private ManagedChannel managedChannel;
+
+    @Autowired
+    public AlbumServiceImpl(@Qualifier("getAlbumGrpcChannel") final ManagedChannel managedChannel) {
+        this.managedChannel = managedChannel;
+        this.stub = AlbumServiceGrpc.newBlockingStub(this.managedChannel).withWaitForReady();
+    }
+
     @Override
     public List<Album> getAll() {
-        return this.generateList();
+        return this.convertToModel(this.stub.getAll(Empty.newBuilder().build()));
     }
 
     @Override
     public List<Album> getAlbumsByArtist(String artistId) {
-        return this.generateList();
+        return this.convertToModel(this.stub.getAlbumByArtist(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(artistId).build()));
     }
 
     @Override
     public Album getAlbumByTrack(String trackId) {
-        return this.getAlbum();
+        return this.getAlbum(this.stub.getAlbumByTrack(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(trackId).build()));
     }
 
-    private List<Album> generateList() {
-        return Arrays.asList(this.getAlbum(), this.getAlbum());
-    }
-
-    private Album getAlbum() {
+    private Album getAlbum(AlbumBaseDefinition.Album album) {
         return new AlbumBuilder()
-                .setArtistId(UUID.randomUUID().toString())
-                .setId(UUID.randomUUID().toString())
-                .setName("Some Name")
+                .setArtistId(album.getArtistId())
+                .setId(album.getId())
+                .setName(album.getName())
                 .build();
+    }
+
+    private List<Album> convertToModel(Iterator<AlbumBaseDefinition.Album> all) {
+        final List<Album> albums = new ArrayList<>();
+        while (all.hasNext()) {
+            albums.add(this.getAlbum(all.next()));
+        }
+        return albums;
     }
 
 }

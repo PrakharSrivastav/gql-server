@@ -3,3 +3,13 @@ spring:
     name: gql-server
 server:
   port: 8080
+service:
+  artist:
+    host: localhost
+    port: 6565
+  album:
+    host: localhost
+    port: 6566
+  track:
+    host: localhost
+    port: 6567
