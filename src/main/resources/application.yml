@@ -5,11 +5,11 @@ server:
   port: 8080
 service:
   artist:
-    host: localhost
+    host: artist-service
     port: 6565
   album:
-    host: localhost
-    port: 6566
+    host: album-service
+    port: 6565
   track:
-    host: localhost
-    port: 6567
+    host: track-service
+    port: 6565
