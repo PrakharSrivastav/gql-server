@@ -5,14 +5,14 @@ server:
   port: 8080
 service:
   artist:
-    #host: artist-service
-    host: localhost
+    host: artist-service
+#    host: localhost
     port: 6565
   album:
-    #host: album-service
-    host: localhost
-    port: 6566
+    host: album-service
+    #host: localhost
+    port: 6565
   track:
-    #host: track-service
-    host: localhost
-    port: 6567
+    host: track-service
+#    host: localhost
+    port: 6565
