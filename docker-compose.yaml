@@ -2,6 +2,6 @@ version: '3'
 services:
   gql:
     build: .
-    image: prakharsrivastav/gql:1
+    image: prakharsrivastav/gql:2
     ports:
       - '8080:8080'
