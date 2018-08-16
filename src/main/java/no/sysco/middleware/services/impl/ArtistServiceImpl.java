@@ -5,6 +5,7 @@ import io.grpc.ManagedChannel;
 import no.sysco.middleware.grpc.ArtistBaseDefinition;
 import no.sysco.middleware.grpc.ArtistServiceGrpc;
 import no.sysco.middleware.models.Artist;
+import no.sysco.middleware.models.builder.ArtistBuilder;
 import no.sysco.middleware.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +31,11 @@ public final class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    public Artist get(final String id) {
+        return this.toModel(this.stub.get(ArtistBaseDefinition.SimpleArtistRequest.newBuilder().setId(id).build()));
+    }
+
+    @Override
     public List<Artist> getAll() {
         return this.convertToModel(this.stub.getAll(Empty.newBuilder().build()));
     }
@@ -46,10 +52,11 @@ public final class ArtistServiceImpl implements ArtistService {
     }
 
     private Artist toModel(ArtistBaseDefinition.Artist artist) {
-        final Artist a = new Artist();
-        a.setName(artist.getName());
-        a.setId(artist.getId());
-        return a;
+        return new ArtistBuilder()
+                .setName(artist.getName())
+                .setId(artist.getId())
+                .setDescription(artist.getDescription())
+                .build();
     }
 
     private List<Artist> convertToModel(final Iterator<ArtistBaseDefinition.Artist> all) {

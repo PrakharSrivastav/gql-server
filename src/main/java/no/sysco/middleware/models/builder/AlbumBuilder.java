@@ -6,6 +6,7 @@ public class AlbumBuilder {
     private String id;
     private String name;
     private String artistId;
+    private String description;
 
     public AlbumBuilder setId(String id) {
         this.id = id;
@@ -22,7 +23,12 @@ public class AlbumBuilder {
         return this;
     }
 
+    public AlbumBuilder setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     public Album build() {
-        return new Album(id, name, artistId);
+        return new Album(id, name, artistId, description);
     }
 }

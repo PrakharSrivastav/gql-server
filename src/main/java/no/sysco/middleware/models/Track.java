@@ -6,15 +6,17 @@ public final class Track {
     private String artistId;
     private String albumId;
     private Double duration;
+    private String description;
 
     public Track() { }
 
-    public Track(String id, String name, String artistId, String albumId, Double duration) {
+    public Track(String id, String name, String artistId, String albumId, Double duration, String description) {
         this.id = id;
         this.name = name;
         this.artistId = artistId;
         this.albumId = albumId;
         this.duration = duration;
+        this.description = description;
     }
 
     public String getId() { return id; }
@@ -27,4 +29,6 @@ public final class Track {
     public void setAlbumId(String albumId) { this.albumId = albumId; }
     public Double getDuration() { return duration; }
     public void setDuration(Double duration) { this.duration = duration; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }

@@ -27,17 +27,21 @@ public final class Query implements GraphQLQueryResolver {
     }
 
     // Get all Artists
-    public List<Artist> getArtist() {
+    public List<Artist> getArtists() {
         return this.artistService.getAll();
     }
 
     // Get all Albums
-    public List<Album> getAlbum() {
+    public List<Album> getAlbums() {
         return this.albumService.getAll();
     }
 
     // Get all Tracks
-    public List<Track> getTrack() {
+    public List<Track> getTracks() {
         return this.trackService.getAll();
     }
+
+    public Artist getArtist(final String id){return this.artistService.get(id);}
+    public Track getTrack(final String id ){return this.trackService.get(id);}
+    public Album getAlbum(final String id) {return this.albumService.get(id);}
 }

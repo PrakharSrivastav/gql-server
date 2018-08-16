@@ -26,6 +26,11 @@ public final class TrackServiceImpl implements TrackService {
     }
 
     @Override
+    public Track get(String trackId) {
+        return this.getTrack(this.stub.get(TrackBaseDefinition.SimpleTrackRequest.newBuilder().setId(trackId).build()));
+    }
+
+    @Override
     public List<Track> getAll() {
         return this.convertToModel(this.stub.getAll(Empty.newBuilder().build()));
     }
@@ -55,6 +60,7 @@ public final class TrackServiceImpl implements TrackService {
                 .setId(t.getId())
                 .setDuration(t.getDuration())
                 .setName(t.getName())
+                .setDescription(t.getDescription())
                 .build();
     }
 }

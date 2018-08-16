@@ -4,6 +4,7 @@ type Artist {
     # added
     albums: [Album!]
     tracks: [Track!]
+    description: String
 }
 
 type Album {
@@ -13,6 +14,7 @@ type Album {
     # Added
     artists:[Artist!]
     tracks:[Track!]
+    description: String
 }
 
 type Track {
@@ -23,10 +25,14 @@ type Track {
     # Added
     artists:[Artist!]
     album: Album
+    description: String
 }
 
 type Query {
-    artist: [Artist!]
-    album: [Album!]
-    track: [Track!]
+    artists: [Artist!]
+    albums: [Album!]
+    tracks: [Track!]
+    artist(id:ID!):Artist
+    album(id:ID!):Album
+    track(id:ID!):Track
 }

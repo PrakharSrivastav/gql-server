@@ -22,7 +22,7 @@ The project is container ready. To deploy use the steps below
 
 - Run `sudo docker-compose build`
 
-- Run `sudo docker psuh prakharsrivastav/gql:<tag>`, to push to docker hub
+- Run `sudo docker push prakharsrivastav/gql:<tag>`, to push to docker hub
 
 - Change the image tag version in the `k8s/dployment.yml`
 

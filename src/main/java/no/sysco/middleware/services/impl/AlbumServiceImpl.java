@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,6 +25,11 @@ public final class AlbumServiceImpl implements AlbumService {
     public AlbumServiceImpl(@Qualifier("getAlbumGrpcChannel") final ManagedChannel managedChannel) {
         this.managedChannel = managedChannel;
         this.stub = AlbumServiceGrpc.newBlockingStub(this.managedChannel).withWaitForReady();
+    }
+
+    @Override
+    public Album get(String id) {
+        return this.getAlbum(this.stub.get(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(id).build()));
     }
 
     @Override
@@ -48,6 +52,7 @@ public final class AlbumServiceImpl implements AlbumService {
                 .setArtistId(album.getArtistId())
                 .setId(album.getId())
                 .setName(album.getName())
+                .setDescription(album.getDescription())
                 .build();
     }
 

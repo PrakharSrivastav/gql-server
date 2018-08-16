@@ -8,6 +8,7 @@ public class TrackBuilder {
     private String artistId;
     private String albumId;
     private Double duration;
+    private String description;
 
     public TrackBuilder setId(String id) {
         this.id = id;
@@ -34,7 +35,12 @@ public class TrackBuilder {
         return this;
     }
 
+    public TrackBuilder setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     public Track build() {
-        return new Track(id, name, artistId, albumId, duration);
+        return new Track(id, name, artistId, albumId, duration, description);
     }
 }
