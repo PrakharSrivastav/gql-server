@@ -32,6 +32,7 @@ type Query {
     artists: [Artist!]
     albums: [Album!]
     tracks: [Track!]
+
     artist(id:ID!):Artist
     album(id:ID!):Album
     track(id:ID!):Track

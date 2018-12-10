@@ -4,6 +4,7 @@ metadata:
   name: gql-service
 spec:
   type: NodePort
+#  type: LoadBalancer
   selector:
     app: gql-service
   ports:
