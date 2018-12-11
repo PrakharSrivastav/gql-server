@@ -1,10 +1,19 @@
 version: '3'
 services:
-  gql:
-    build: .
-    image: prakharsrivastav/gql:2
+#  gql:
+#    build: .
+##    image: prakharsrivastav/gql:9
+#    ports:
+#      - '8080:8080'
+
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mem
     ports:
-      - '8080:8080'
+      - 9411:9411
 
 networks:
   default:

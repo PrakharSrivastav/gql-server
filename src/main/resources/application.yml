@@ -1,18 +1,26 @@
 spring:
+  sleuth:
+    sampler:
+      probability: 1
   application:
     name: gql-server
+  zipkin:
+#    base-url: http://zipkin:9411/
+    base-url: http://localhost:9411/
+#    sender:
+#      type: web
 server:
   port: 8080
 service:
   artist:
-    host: artist-service
-#    host: localhost
-    port: 6565
+#    host: artist-service
+    host: localhost
+    port: 6564
   album:
-    host: album-service
-    #host: localhost
-    port: 6565
+#    host: album-service
+    host: localhost
+    port: 6563
   track:
-    host: track-service
-#    host: localhost
+#    host: track-service
+    host: localhost
     port: 6565

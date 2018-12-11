@@ -1,9 +1,14 @@
 buildscript {
+  ext {
+    springBootVersion = '2.0.3.BUILD-SNAPSHOT'
+  }
   repositories {
     mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
   }
 }
 
@@ -16,23 +21,42 @@ apply plugin: 'io.spring.dependency-management'
 group 'no.sysco.middleware'
 version '1.0-SNAPSHOT'
 // variables
-ext { grpcVersion = '1.13.1' }
+ext {
+  grpcVersion = '1.13.1'
+  springCloudVersion = "Finchley.BUILD-SNAPSHOT"
+  graphQlVersion = "5.0.2"
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
+  maven { url "https://repo.spring.io/snapshot" }
+  maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
 }
 
 dependencies {
-  compile 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
-  compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+  compile "com.graphql-java:graphql-spring-boot-starter:${graphQlVersion}"
+  compile "com.graphql-java:graphiql-spring-boot-starter:${graphQlVersion}"
   compile 'com.graphql-java:graphql-java-tools:5.2.0'
   compile "io.grpc:grpc-stub:${grpcVersion}"
   compile "io.grpc:grpc-protobuf:${grpcVersion}"
   compile "io.grpc:grpc-netty:${grpcVersion}"
   testCompile group: 'junit', name: 'junit', version: '4.12'
+
+  implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
+  implementation('org.springframework.cloud:spring-cloud-starter-zipkin')
+  testImplementation('org.springframework.boot:spring-boot-starter-test')
+  compile "org.springframework.boot:spring-boot-starter-web"
+
+
 }
 
 bootJar {
