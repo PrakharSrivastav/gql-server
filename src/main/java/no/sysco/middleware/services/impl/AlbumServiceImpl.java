@@ -1,6 +1,6 @@
 package no.sysco.middleware.services.impl;
 
-import brave.Span;
+import brave.ScopedSpan;
 import brave.Tracer;
 import com.google.protobuf.Empty;
 import io.grpc.ManagedChannel;
@@ -36,8 +36,8 @@ public final class AlbumServiceImpl implements AlbumService {
 
     @Override
     public Album get(String id) {
-        final Span span = this.tracer.nextSpan().name("GetAlbumById").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("GetAlbumById");
+        try {
             logger.info("Calling AlbumServiceGrpc :: Get");
             return this.getAlbum(this.stub.get(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(id).build()));
         } finally {
@@ -47,8 +47,8 @@ public final class AlbumServiceImpl implements AlbumService {
 
     @Override
     public List<Album> getAll() {
-        final Span span = this.tracer.nextSpan().name("GetAlbums").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("GetAlbums");
+        try {
             logger.info("Calling AlbumServiceGrpc :: GetAll");
             return this.convertToModel(this.stub.getAll(Empty.newBuilder().build()));
         } finally {
@@ -58,19 +58,24 @@ public final class AlbumServiceImpl implements AlbumService {
 
     @Override
     public List<Album> getAlbumsByArtist(String artistId) {
-        final Span span = this.tracer.nextSpan().name("GetAlbumsByArtist").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("GetAlbumsByArtist");
+        try {
             logger.info("Calling AlbumServiceGrpc :: GetAlbumByArtist");
             return this.convertToModel(this.stub.getAlbumByArtist(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(artistId).build()));
-        } finally {
+        }
+        catch (Error  | RuntimeException e){
+            span.error(e);
+            throw e;
+        }
+        finally {
             span.finish();
         }
     }
 
     @Override
     public Album getAlbumByTrack(String trackId) {
-        final Span span = this.tracer.nextSpan().name("GetAlbumsByTrack").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("GetAlbumsByTrack");
+        try {
             logger.info("Calling AlbumServiceGrpc :: GetAlbumByTrack");
             return this.getAlbum(this.stub.getAlbumByTrack(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(trackId).build()));
         } finally {

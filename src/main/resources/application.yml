@@ -15,12 +15,12 @@ service:
   artist:
 #    host: artist-service
     host: localhost
-    port: 6564
+    port: 6565
   album:
 #    host: album-service
     host: localhost
-    port: 6563
+    port: 6564
   track:
 #    host: track-service
     host: localhost
-    port: 6565
+    port: 6560
