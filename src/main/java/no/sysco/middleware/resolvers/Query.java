@@ -1,6 +1,6 @@
 package no.sysco.middleware.resolvers;
 
-import brave.Span;
+import brave.ScopedSpan;
 import brave.Tracer;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import no.sysco.middleware.models.Album;
@@ -36,12 +36,12 @@ public final class Query implements GraphQLQueryResolver {
 
     // Get all Artists
     public List<Artist> getArtists() {
-        logger.info("Artist Root");
-        final Span span = this.tracer.newTrace().name("RooTArtist").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
-            logger.info("Calling ArtistService :: GetAll");
-            logger.info("Artist Root");
+        final ScopedSpan span = this.tracer.startScopedSpan("GQL-Artist-Root");
+        try {
             return this.artistService.getAll();
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
@@ -49,12 +49,12 @@ public final class Query implements GraphQLQueryResolver {
 
     // Get all Albums
     public List<Album> getAlbums() {
-        logger.info("Album Root");
-        final Span span = this.tracer.newTrace().name("RooTAlbum").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
-            logger.info("Calling AlbumService :: GetAll");
-            logger.info("Album Root");
+        final ScopedSpan span = this.tracer.startScopedSpan("GQL-Album-Root");
+        try {
             return this.albumService.getAll();
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
@@ -62,11 +62,12 @@ public final class Query implements GraphQLQueryResolver {
 
     // Get all Tracks
     public List<Track> getTracks() {
-        logger.info("Track Root");
-        final Span span = this.tracer.newTrace().name("RooTrack").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
-            logger.info("Calling TrackService :: GetAll");
+        final ScopedSpan span = this.tracer.startScopedSpan("GQL-Track-Root");
+        try {
             return this.trackService.getAll();
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
@@ -74,30 +75,40 @@ public final class Query implements GraphQLQueryResolver {
     }
 
     public Artist getArtist(final String id) {
-        final Span span = this.tracer.newTrace().name("GetArtist").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("GQL-Artist");
+        try {
             logger.info("Get Artist {}", id);
             return this.artistService.get(id);
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
     }
 
     public Track getTrack(final String id) {
-        final Span span = this.tracer.newTrace().name("GetTrack").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("GQL-Track");
+        try {
+            span.tag("gql-track-get", id);
             logger.info("Get Track {}", id);
             return this.trackService.get(id);
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
     }
 
     public Album getAlbum(final String id) {
-        final Span span = this.tracer.newTrace().name("GetAlbum").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("GQL-Album");
+        try {
             logger.info("Get Album {}", id);
             return this.albumService.get(id);
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }

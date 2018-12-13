@@ -1,5 +1,7 @@
 package no.sysco.middleware.resolvers;
 
+import brave.ScopedSpan;
+import brave.Tracer;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import no.sysco.middleware.models.Album;
 import no.sysco.middleware.models.Artist;
@@ -19,22 +21,42 @@ public class ArtistQueryResolver implements GraphQLResolver<Artist> {
     private static Logger logger = LoggerFactory.getLogger(ArtistQueryResolver.class);
     private AlbumService albumService;
     private TrackService trackService;
+    private Tracer tracer;
+
 
     @Autowired
-    public ArtistQueryResolver(AlbumService albumService, TrackService trackService) {
+    public ArtistQueryResolver(AlbumService albumService, TrackService trackService, final Tracer tracer) {
         this.albumService = albumService;
         this.trackService = trackService;
+        this.tracer = tracer;
+
     }
 
 
     public List<Album> getAlbums(final Artist artist) {
-        logger.info("Get Album for artist {}", artist.getId());
-        return this.albumService.getAlbumsByArtist(artist.getId());
+        final ScopedSpan span = this.tracer.startScopedSpan("gql-artist-resolving-albums");
+        try {
+            logger.info("Get Album for artist {}", artist.getId());
+            return this.albumService.getAlbumsByArtist(artist.getId());
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
+        } finally {
+            span.finish();
+        }
     }
 
     public List<Track> getTracks(final Artist artist) {
-        logger.info("Get Track for artist {}", artist.getId());
-        return this.trackService.getTracksByArtist(artist.getId());
+        final ScopedSpan span = this.tracer.startScopedSpan("gql-artist-resolving-tracks");
+        try {
+            logger.info("Get Track for artist {}", artist.getId());
+            return this.trackService.getTracksByArtist(artist.getId());
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
+        } finally {
+            span.finish();
+        }
     }
 
 }

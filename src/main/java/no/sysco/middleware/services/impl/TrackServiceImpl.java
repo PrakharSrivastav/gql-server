@@ -1,6 +1,6 @@
 package no.sysco.middleware.services.impl;
 
-import brave.Span;
+import brave.ScopedSpan;
 import brave.Tracer;
 import com.google.protobuf.Empty;
 import io.grpc.ManagedChannel;
@@ -34,10 +34,15 @@ public final class TrackServiceImpl implements TrackService {
 
     @Override
     public Track get(String trackId) {
-        final Span span = this.tracer.nextSpan().start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+
+        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-tracks-by-id");
+        try {
+            span.tag("calling grpc service", trackId);
             logger.info("Calling TrackServiceGrpc :: Get");
             return this.getTrack(this.stub.get(TrackBaseDefinition.SimpleTrackRequest.newBuilder().setId(trackId).build()));
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
@@ -45,10 +50,13 @@ public final class TrackServiceImpl implements TrackService {
 
     @Override
     public List<Track> getAll() {
-        final Span span = this.tracer.nextSpan().name("GetTracks").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-tracks-all");
+        try {
             logger.info("Calling TrackServiceGrpc :: GetAll");
             return this.convertToModel(this.stub.getAll(Empty.newBuilder().build()));
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
@@ -56,10 +64,13 @@ public final class TrackServiceImpl implements TrackService {
 
     @Override
     public List<Track> getTracksByAlbum(String trackId) {
-        final Span span = this.tracer.nextSpan().name("GetTracksByAlbum").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-tracks-by-album");
+        try {
             logger.info("Calling TrackServiceGrpc :: GetTracksByAlbum");
             return this.convertToModel(this.stub.getTrackByAlbum(TrackBaseDefinition.SimpleTrackRequest.newBuilder().setId(trackId).build()));
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
@@ -67,10 +78,13 @@ public final class TrackServiceImpl implements TrackService {
 
     @Override
     public List<Track> getTracksByArtist(String artistId) {
-        final Span span = this.tracer.nextSpan().name("GetTracksByArtist").start();
-        try (Tracer.SpanInScope sis = tracer.withSpanInScope(span.start())) {
+        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-tracks-by-artist");
+        try {
             logger.info("Calling TrackServiceGrpc :: GetTracksByArtist");
             return this.convertToModel(this.stub.getTrackByArtist(TrackBaseDefinition.SimpleTrackRequest.newBuilder().setId(artistId).build()));
+        } catch (RuntimeException | Error e) {
+            span.error(e);
+            throw e;
         } finally {
             span.finish();
         }
