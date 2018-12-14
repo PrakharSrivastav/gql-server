@@ -1,7 +1,5 @@
 package no.sysco.middleware.resolvers;
 
-import brave.ScopedSpan;
-import brave.Tracer;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import no.sysco.middleware.models.Album;
 import no.sysco.middleware.models.Artist;
@@ -21,36 +19,18 @@ public class TrackQueryResolver implements GraphQLResolver<Track> {
     private static Logger logger = LoggerFactory.getLogger(TrackQueryResolver.class);
     private ArtistService artistService;
     private AlbumService albumService;
-    private Tracer tracer;
 
     @Autowired
-    public TrackQueryResolver(final ArtistService artistService, final AlbumService albumService, final Tracer tracer) {
+    public TrackQueryResolver(final ArtistService artistService, final AlbumService albumService) {
         this.artistService = artistService;
         this.albumService = albumService;
-        this.tracer = tracer;
     }
 
     public List<Artist> getArtists(Track track) {
-        final ScopedSpan span = this.tracer.startScopedSpan("gql-track-resolving-artists");
-        try {
-            return this.artistService.getArtistByTrack(track.getId());
-        } catch (RuntimeException | Error e) {
-            span.error(e);
-            throw e;
-        } finally {
-            span.finish();
-        }
+        return this.artistService.getArtistByTrack(track.getId());
     }
 
     public Album getAlbum(Track track) {
-        final ScopedSpan span = this.tracer.startScopedSpan("gql-track-resolving-albums");
-        try {
-            return this.albumService.getAlbumByTrack(track.getId());
-        } catch (RuntimeException | Error e) {
-            span.error(e);
-            throw e;
-        } finally {
-            span.finish();
-        }
+        return this.albumService.getAlbumByTrack(track.getId());
     }
 }

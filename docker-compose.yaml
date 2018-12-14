@@ -1,11 +1,10 @@
 version: '3'
 services:
-#  gql:
-#    build: .
-##    image: prakharsrivastav/gql:9
-#    ports:
-#      - '8080:8080'
-
+  gql:
+    build: .
+    image: prakharsrivastav/gql:10
+    ports:
+      - '8080:8080'
 
   zipkin:
     image: openzipkin/zipkin

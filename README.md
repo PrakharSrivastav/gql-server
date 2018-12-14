@@ -1,5 +1,6 @@
 # gql-server
-Creating a graphql server with java-springboot
+Creating a graphql server with java-springboot.
+Added support for traceability using zipkin
 
 ## Scope
 This repository is used to create a graphql server. The idea is to expose queries and mutations for three entities:
@@ -31,6 +32,15 @@ The project is container ready. To deploy use the steps below
 
 ## Communication
 ![](docs/infra.png)
+
+## Distributed Tracing
+Added support for distributed tracing using zipkin backend. This is not implemented for k8s yet, but can be tested using docker-compose
+- docker-compose up -d
+- docker-compose up -d (for other linked services)
+- navigate to http://localhost:9411 to see the zipkin dashboard
+- navigate to http://localhost:8080/graphiql to see the graphql dashboard
+- send a gql query via dashboard
+- observe traces on the zipkin dashboard
 
 ## Improvements
 

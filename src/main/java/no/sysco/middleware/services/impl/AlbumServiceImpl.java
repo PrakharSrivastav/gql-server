@@ -1,7 +1,5 @@
 package no.sysco.middleware.services.impl;
 
-import brave.ScopedSpan;
-import brave.Tracer;
 import com.google.protobuf.Empty;
 import io.grpc.ManagedChannel;
 import no.sysco.middleware.grpc.AlbumBaseDefinition;
@@ -25,69 +23,31 @@ public final class AlbumServiceImpl implements AlbumService {
     private static Logger logger = LoggerFactory.getLogger(AlbumServiceImpl.class);
     private AlbumServiceGrpc.AlbumServiceBlockingStub stub;
     private ManagedChannel managedChannel;
-    private Tracer tracer;
 
     @Autowired
-    public AlbumServiceImpl(@Qualifier("getAlbumGrpcChannel") final ManagedChannel managedChannel, final Tracer tracer) {
+    public AlbumServiceImpl(@Qualifier("getAlbumGrpcChannel") final ManagedChannel managedChannel) {
         this.managedChannel = managedChannel;
-        this.tracer = tracer;
         this.stub = AlbumServiceGrpc.newBlockingStub(this.managedChannel).withWaitForReady();
     }
 
     @Override
     public Album get(String id) {
-        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-albums-by-id");
-        try {
-            logger.info("Calling AlbumServiceGrpc :: Get");
-            return this.getAlbum(this.stub.get(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(id).build()));
-        } catch (RuntimeException | Error e) {
-            span.error(e);
-            throw e;
-        } finally {
-            span.finish();
-        }
+        return this.getAlbum(this.stub.get(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(id).build()));
     }
 
     @Override
     public List<Album> getAll() {
-        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-albums-all");
-        try {
-            logger.info("Calling AlbumServiceGrpc :: GetAll");
-            return this.convertToModel(this.stub.getAll(Empty.newBuilder().build()));
-        } catch (RuntimeException | Error e) {
-            span.error(e);
-            throw e;
-        } finally {
-            span.finish();
-        }
+        return this.convertToModel(this.stub.getAll(Empty.newBuilder().build()));
     }
 
     @Override
     public List<Album> getAlbumsByArtist(String artistId) {
-        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-albums-by-artist");
-        try {
-            logger.info("Calling AlbumServiceGrpc :: GetAlbumByArtist");
-            return this.convertToModel(this.stub.getAlbumByArtist(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(artistId).build()));
-        } catch (Error | RuntimeException e) {
-            span.error(e);
-            throw e;
-        } finally {
-            span.finish();
-        }
+        return this.convertToModel(this.stub.getAlbumByArtist(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(artistId).build()));
     }
 
     @Override
     public Album getAlbumByTrack(String trackId) {
-        final ScopedSpan span = this.tracer.startScopedSpan("gql-service-albums-by-track");
-        try {
-            logger.info("Calling AlbumServiceGrpc :: GetAlbumByTrack");
-            return this.getAlbum(this.stub.getAlbumByTrack(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(trackId).build()));
-        } catch (RuntimeException | Error e) {
-            span.error(e);
-            throw e;
-        } finally {
-            span.finish();
-        }
+        return this.getAlbum(this.stub.getAlbumByTrack(AlbumBaseDefinition.SimpleAlbumRequest.newBuilder().setId(trackId).build()));
     }
 
     private Album getAlbum(AlbumBaseDefinition.Album album) {
